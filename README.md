@@ -1,4 +1,6 @@
-<img width="1024" height="559" alt="image_92b67440-5a3c-4c29-ad09-80824bab4d7c" src="https://github.com/user-attachments/assets/a1cedf21-f1a9-4be9-9854-76d12a967204" />
+
+<img width="1408" height="768" alt="1786797042390" src="https://github.com/user-attachments/assets/3eefde98-3f3b-46ed-8a95-1567ad8fe48e" />
+
 
   <h1>🦊 OrangeFox Recovery Project</h1>
   <strong>Custom Recovery for POCO F4 GT (ingres)</strong>
