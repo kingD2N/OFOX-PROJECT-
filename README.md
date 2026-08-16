@@ -23,7 +23,7 @@
 | **Codename** | `ingres` |
 | **Chipset** | Qualcomm SM8450 Snapdragon 8 Gen 1 (4 nm) |
 | **Architecture** | ARM64 |
-| **Maintainer** | [Nama/Username GitHub Kamu] |
+| **Maintainer** | @kingD2N |
 
 ---
 
