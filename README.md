@@ -9,7 +9,7 @@
 
   [![Version](https://img.shields.io/badge/Version-R11.1-orange.svg)](https://orangefox.download)
   [![Status](https://img.shields.io/badge/Status-Unofficial-red.svg)](#)
-  [![Android](https://img.shields.io/badge/Android-12%20%7C%2013%20%7C%2014-green.svg)](#)
+  [![Android](https://img.shields.io/badge/Android-15%20%7C%2016%20%7C%2017-green.svg)](#)
   
 </div>
 
