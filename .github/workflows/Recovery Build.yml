@@ -14,7 +14,7 @@ on:
       DEVICE_TREE_BRANCH:
         description: 'DEVICE_TREE_BRANCH (branch "TWRP" MEMANG sengaja dipakai jadi sumber build OrangeFox juga -- lihat README.md tree ini: "Nama TWRP di sini murni penamaan branch, bukan penanda jenis recovery". Dikonfirmasi dari isi zip yang di-upload, bukan asumsi.)'
         required: true
-        default: 'BETA'
+        default: 'TWRP'
       DEVICE_PATH:
         description: 'DEVICE_PATH'
         required: true
@@ -57,15 +57,9 @@ jobs:
       contents: write
     steps:
 
-    # You might want to Checkout your repo first, but not mandatory
     - name: Check Out
       uses: actions/checkout@v4
 
-    # fox_14.1 butuh disk jauh lebih besar daripada fox_12.1 (dokumentasi resmi OrangeFox:
-    # minimal 85GB, vs 45GB untuk fox_12.1). Runner GitHub cuma ~14GB bebas dari awal, jadi
-    # ini sapuan paling agresif duluan -- buang Android SDK/NDK, .NET, Haskell/GHC, image
-    # Docker, dan paket besar bawaan runner. "android: true" aman: itu SDK/NDK bawaan runner
-    # untuk build app Gradle, BUKAN source AOSP yang baru di-sync belakangan di step lain.
     - name: Free disk space (pre-cleanup)
       uses: jlumbroso/free-disk-space@main
       with:
@@ -77,7 +71,6 @@ jobs:
         docker-images: true
         swap-storage: true
 
-    # Cleanup The Actions Workspace Using Custom Composite Run Actions
     - name: Cleanup
       uses: rokibhasansagar/slimhub_actions@main
 
@@ -106,12 +99,6 @@ jobs:
         sudo bash setup/install_android_sdk.sh
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
-    # fox_14.1 = basis Android 14. Google baru mewajibkan JDK 17 untuk build AOSP mulai
-    # sekitar masa transisi Android 14 ("Trunk Stable Project" dimulai dari Android 14,
-    # bukan baru di 16). JDK 11 (dipakai workflow fox_12.1 lama) kemungkinan tidak cukup di
-    # sini. Ini penyesuaian berbasis analisis, bukan hasil compile langsung -- kalau build
-    # log minta versi lain, kabari saya. (fox_16.0 kemarin butuh JDK 21 secara spesifik,
-    # tapi itu manifest Android 16 yang jauh lebih baru dari basis fox_14.1 ini.)
     - name: Install OpenJDK
       uses: actions/setup-java@v4
       with:
@@ -158,8 +145,6 @@ jobs:
         fi
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
-    # Diagnostik ringan: kalau step berikutnya gagal karena kehabisan ruang/RAM, angka
-    # pastinya langsung kelihatan di log tanpa perlu menebak.
     - name: Check disk & memory after sync
       if: always()
       run: |
@@ -214,12 +199,7 @@ jobs:
         cat "$DM" 2>/dev/null | head -60
 
     - name: Clone common tree
-      # CATATAN PERBAIKAN: versi workflow paling lama selalu pakai DEVICE_TREE_BRANCH juga
-      # untuk clone common tree (tidak ada input branch terpisah). Itu cuma "aman" selama
-      # COMMON_TREE_URL kosong (kondisi default kalian saat ini). Begitu diisi sungguhan,
-      # kalau branch common tree-nya beda nama dari branch device tree, clone ini gagal fatal
-      # dan job berhenti. Sekarang dipisah jadi COMMON_TREE_BRANCH sendiri -- kalau
-      # dikosongkan, git clone tanpa -b sehingga otomatis memakai default branch repo tersebut.
+
       if: |
         github.event.inputs.COMMON_TREE_URL != ''
         && github.event.inputs.COMMON_PATH != ''
@@ -277,13 +257,6 @@ jobs:
         done
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
-    # Ukuran swap SENGAJA TIDAK dinaikkan meski dokumentasi OrangeFox menyebut 32GB RAM
-    # minimum untuk fox_14.1 -- swap file dari pierotofy ini memakan ruang DISK, dan disk
-    # (bukan RAM) yang jadi risiko paling kritis di sini (lihat catatan disk-space di
-    # step-step sebelumnya: fox_14.1 minimal 85GB, runner cuma ~14GB bebas di awal).
-    # Menaikkan swap di sini cuma memperparah risiko yang justru paling berbahaya. Untuk RAM
-    # virtual tambahan, zram di bawah (berbasis kompresi RAM, tidak memakan disk) menambah
-    # ~50% kapasitas RAM efektif tanpa mengorbankan ruang build.
     - name: Set Swap Space
       uses: pierotofy/set-swap-space@master
       with:
@@ -300,8 +273,6 @@ jobs:
         free -h
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
-    # Cek disk PERSIS sebelum tahap terberat (build). Kalau nanti build gagal dengan "No
-    # space left on device", angka di sini + di build.log adalah bukti pertama yang dicek.
     - name: Disk space check (sebelum build)
       run: |
         echo "== df -h =="
