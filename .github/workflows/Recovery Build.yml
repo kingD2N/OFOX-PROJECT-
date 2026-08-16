@@ -14,7 +14,7 @@ on:
       DEVICE_TREE_BRANCH:
         description: 'DEVICE_TREE_BRANCH (branch "TWRP" MEMANG sengaja dipakai jadi sumber build OrangeFox juga -- lihat README.md tree ini: "Nama TWRP di sini murni penamaan branch, bukan penanda jenis recovery". Dikonfirmasi dari isi zip yang di-upload, bukan asumsi.)'
         required: true
-        default: 'OFOX'
+        default: 'BETA'
       DEVICE_PATH:
         description: 'DEVICE_PATH'
         required: true
