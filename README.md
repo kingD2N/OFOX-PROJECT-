@@ -38,6 +38,22 @@
 
 ---
 
+## ✅ Status Fungsionalitas
+
+- [x] Android 16
+- [x] 12 Partisi
+- [x] Booting
+- [x] Dekripsi Data (FBEv2)
+- [x] Layar Sentuh (*Touchscreen & ingres screen*)
+- [x] MTP (*Media Transfer Protocol*)
+- [x] ADB (*Android Debug Bridge*)
+- [x] Flashing file `.zip` & `.img`
+- [x] USB OTG
+- [ ] Fastboot
+- [ ] Getaran (*Haptic Feedback*)
+
+---
+
 ## 🛠️ Installation Guide
 
 ### Prerequisites
